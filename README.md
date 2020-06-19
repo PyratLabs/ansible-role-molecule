@@ -1,6 +1,6 @@
 # Ansible Role: molecule
 
-Ansible role for installing [``](https://molecule.readthedocs.io/) into a Python3 VirtualEnv.
+Ansible role for installing [`molecule`](https://molecule.readthedocs.io/) into a Python3 VirtualEnv.
 
 [![Build Status](https://www.travis-ci.org/PyratLabs/ansible-role-molecule.svg?branch=master)](https://www.travis-ci.org/PyratLabs/ansible-role-molecule)
 
