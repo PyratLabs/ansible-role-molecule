@@ -1,0 +1,12 @@
+---
+
+- name: Get the version information of the latest release of molecule
+  uri:
+    url: https://pypi.org/pypi/molecule/json
+    return_content: true
+    body_format: json
+  register: molecule_get_latest_version
+
+- name: Ensure the molecule_version variable is set
+  set_fact:
+    molecule_version: "{{ molecule_get_latest_version.json.info.version }}"

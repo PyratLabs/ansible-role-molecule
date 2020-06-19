@@ -1,0 +1,34 @@
+---
+
+- name: Check to see if the molecule version directory exists
+  stat:
+    path: "{{ molecule_install_dir }}/molecule-{{ molecule_version }}"
+  register: molecule_check_version_dir
+
+- name: Fail if the molecule version directory doesn't exist
+  fail:
+    msg: "{{ molecule_install_dir }}/molecule-{{ molecule_version }} is missing after play."
+  when: not molecule_check_version_dir.stat.exists
+
+- name: Check to see if the molecule current symlink exists
+  stat:
+    path: "{{ molecule_install_dir }}/{{ molecule_current_dirname }}"
+  register: molecule_check_symlink_dir
+
+- name: Fail if the molecule symlink directory doesn't exist
+  fail:
+    msg: "{{ molecule_install_dir }}/{{ molecule_current_dirname }} symlink not correct after play."
+  when: not molecule_check_symlink_dir.stat.exists
+        or not molecule_check_symlink_dir.stat.islnk
+        or molecule_check_symlink_dir.stat.lnk_target != (molecule_install_dir + "/molecule-" + molecule_version)
+
+- name: Check to see if the molecule version directory is a virtualenv
+  stat:
+    path: "{{ molecule_install_dir }}/{{ molecule_current_dirname }}/bin/activate"
+  register: molecule_check_virtualenv_dir
+
+- name: Fail if the molecule virtualenv directory doesn't exist
+  fail:
+    msg: "{{ molecule_install_dir }}/{{ molecule_current_dirname }}/bin/activate not found after play."
+  when: not molecule_check_virtualenv_dir.stat.exists
+        or not molecule_check_virtualenv_dir.stat.isreg

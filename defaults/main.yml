@@ -1,0 +1,19 @@
+---
+
+# Use a specific version of molecule, eg. `2.22`. Specify `false` for latest.
+molecule_version: false
+
+# Installation directory to put molecule virtual environments.
+molecule_install_dir: "{{ ansible_user_dir }}/.virtualenvs"
+
+# Name for the currently active molecule Virtualenv.
+molecule_current_dirname: molecule
+
+# Install a venv helper to launch virtualenv executables from a "bin" directory
+molecule_install_venv_helper: true
+
+# "bin" directory for venv helper installation
+molecule_bin_dir: "{{ ansible_user_dir }}/bin"
+
+# Allow role to install OS dependencies.
+molecule_install_os_dependencies: false

@@ -1,0 +1,14 @@
+---
+
+- name: Check the path for Python
+  command: which python3
+  register: molecule_check_python_3_path
+  failed_when: molecule_check_python_3_path.rc > 0
+  changed_when: false
+  when: molecule_python3_path is not defined
+
+- name: Ensure the path to Python 3 is set as a fact
+  set_fact:
+    molecule_python3_path: "{{ molecule_check_python_3_path.stdout }}"
+    molecule_ansible_python_interpreter: "{{ ansible_python_interpreter | default(omit) }}"
+  when: molecule_python3_path is not defined
