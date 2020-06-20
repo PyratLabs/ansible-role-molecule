@@ -23,6 +23,7 @@
     state: present
     virtualenv: "{{ molecule_install_dir }}/molecule-{{ molecule_version }}"
     virtualenv_command: "{{ molecule_python3_path }} -m venv"
+    virtualenv_site_packages: "{{ molecule_venv_site_packages | default(False) }}"
   loop:
     - molecule
     - molecule[docker]

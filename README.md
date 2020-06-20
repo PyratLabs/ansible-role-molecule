@@ -30,6 +30,7 @@ my spare time so I cannot promise a speedy fix delivery.
 | `molecule_version`                 | Use a specific version of molecule, eg. `2.22.0`. Specify `false` for latest. | `false`              |
 | `molecule_install_dir`             | Installation directory to put molecule virtual environments.                  | `$HOME/.virtualenvs` |
 | `molecule_current_dirname`         | Name for the currently active molecule Virtualenv.                            | molecule             |
+| `molecule_venv_site_packages`      | Allow venv to inherit packages from global site-packages.                     | `false`              |
 | `molecule_install_venv_helper`     | Install a venv helper to launch venv executables from a "bin" directory.      | `true`               |
 | `molecule_bin_dir`                 | "bin" directory to install venv-helpers to.                                   | `$HOME/bin`          |
 | `molecule_install_os_dependencies` | Allow role to install OS dependencies.                                        | `false`              |

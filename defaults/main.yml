@@ -9,6 +9,9 @@ molecule_install_dir: "{{ ansible_user_dir }}/.virtualenvs"
 # Name for the currently active molecule Virtualenv.
 molecule_current_dirname: molecule
 
+# Allow venv to inherit packages from global site-packages
+molecule_venv_site_packages: false
+
 # Install a venv helper to launch virtualenv executables from a "bin" directory
 molecule_install_venv_helper: true
 
