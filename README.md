@@ -28,8 +28,10 @@ my spare time so I cannot promise a speedy fix delivery.
 | Variable                           | Description                                                                   | Default Value        |
 |------------------------------------|-------------------------------------------------------------------------------|----------------------|
 | `molecule_version`                 | Use a specific version of molecule, eg. `2.22.0`. Specify `false` for latest. | `false`              |
+| `molecule_support_packages`        | Install molecule support packages (eg. Docker)                                | []                   |
 | `molecule_install_dir`             | Installation directory to put molecule virtual environments.                  | `$HOME/.virtualenvs` |
-| `molecule_current_dirname`         | Name for the currently active molecule Virtualenv.                            | molecule             |
+| `molecule_venv_name`               | Name for the molecule Virtualenv.                                             | molecule             |
+| `molecule_venv_suffix`             | Add a custom suffix to virtualenv.                                            | `molecule_version`   |
 | `molecule_venv_site_packages`      | Allow venv to inherit packages from global site-packages.                     | `false`              |
 | `molecule_install_venv_helper`     | Install a venv helper to launch venv executables from a "bin" directory.      | `true`               |
 | `molecule_bin_dir`                 | "bin" directory to install venv-helpers to.                                   | `$HOME/bin`          |
@@ -60,18 +62,21 @@ Example playbook for installing the latest molecule version globally:
     molecule_install_os_dependencies: true
     molecule_install_dir: /opt/molecule/bin
     molecule_bin_dir: /usr/bin
-    molecule_current_dirname: current
+    molecule_venv_name: current
+    molecule_support_packages:
+      - docker
+      - lint
   roles:
     - role: xanmanning.molecule
 ```
 
 ### Activating the molecule venv
 
-You need to activate the python3 virtual environment to be able to access `az`.
+You need to activate the python3 virtual environment to be able to access `molecule`.
 This is done as per the below:
 
 ```bash
-source {{ molecule_install_dir }}/{{ molecule_current_dirname }}/bin/activate
+source {{ molecule_install_dir }}/{{ molecule_venv_name }}/bin/activate
 ```
 
 In the above example global installation playbook, this would look like the

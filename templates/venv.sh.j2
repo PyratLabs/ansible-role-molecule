@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-source "{{ molecule_install_dir }}/{{ molecule_current_dirname }}/bin/activate"
+source "{{ molecule_install_dir }}/{{ molecule_venv_name }}/bin/activate"
 
-{{ molecule_install_dir }}/{{ molecule_current_dirname }}/bin/{{ item }} $@
+{{ molecule_install_dir }}/{{ molecule_venv_name }}/bin/{{ item }} $@
 
 deactivate

@@ -3,11 +3,20 @@
 # Use a specific version of molecule, eg. `2.22`. Specify `false` for latest.
 molecule_version: false
 
+# Install molecule support packages (list), eg. docker
+molecule_support_packages: []
+# molecule_support_packages:
+#   - docker
+#   - lint
+
 # Installation directory to put molecule virtual environments.
 molecule_install_dir: "{{ ansible_user_dir }}/.virtualenvs"
 
-# Name for the currently active molecule Virtualenv.
-molecule_current_dirname: molecule
+# Name for the molecule Virtualenv.
+molecule_venv_name: molecule
+
+# Add a custom suffix to virtualenv (default: molecule_version)
+molecule_venv_suffix: false
 
 # Allow venv to inherit packages from global site-packages
 molecule_venv_site_packages: false

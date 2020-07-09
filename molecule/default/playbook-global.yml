@@ -6,6 +6,9 @@
     molecule_install_os_dependencies: true
     molecule_install_dir: /opt/molecule/bin
     molecule_bin_dir: /usr/bin
-    molecule_current_dirname: current
+    molecule_venv_name: current
+    molecule_support_packages:
+      - docker
+      - lint
   roles:
     - role: xanmanning.molecule

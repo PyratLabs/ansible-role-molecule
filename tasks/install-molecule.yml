@@ -1,11 +1,17 @@
 ---
 
+- name: Ensure the venv suffix is set
+  set_fact:
+    molecule_venv_suffix: "{{ molecule_version }}"
+  when: molecule_venv_suffix is not defined
+        or not molecule_venv_suffix
+
 - name: Ensure the molecule install directory exists
   file:
     path: "{{ molecule_install_dir }}"
     state: directory
 
-- name: Ensure the azure-cli bin directory exists
+- name: Ensure the molecule bin directory exists
   file:
     path: "{{ molecule_bin_dir }}"
     state: directory
@@ -18,15 +24,24 @@
 
 - name: Ensure molecule is installed in a virtual environment
   pip:
-    name: "{{ item }}"
+    name: molecule
     version: "{{ molecule_version }}"
     state: present
-    virtualenv: "{{ molecule_install_dir }}/molecule-{{ molecule_version }}"
+    virtualenv: "{{ molecule_install_dir }}/{{ molecule_venv_name }}-{{ molecule_venv_suffix }}"
     virtualenv_command: "{{ molecule_python3_path }} -m venv"
     virtualenv_site_packages: "{{ molecule_venv_site_packages | default(False) }}"
-  loop:
-    - molecule
-    - molecule[docker]
+
+- name: Ensure molecule support packages are installed in a virtual environment
+  pip:
+    name: "molecule[{{ item }}]"
+    version: "{{ molecule_version }}"
+    state: present
+    virtualenv: "{{ molecule_install_dir }}/{{ molecule_venv_name }}-{{ molecule_venv_suffix }}"
+    virtualenv_command: "{{ molecule_python3_path }} -m venv"
+    virtualenv_site_packages: "{{ molecule_venv_site_packages | default(False) }}"
+  loop: "{{ molecule_support_packages }}"
+  when: molecule_support_packages is defined
+        and molecule_support_packages | length > 0
 
 - name: Ensure the originally configured Python interpreter is used by Ansible
   set_fact:
@@ -35,14 +50,14 @@
 
 - name: Ensure the current release is symlinked in the install directory
   file:
-    src: "{{ molecule_install_dir }}/molecule-{{ molecule_version }}"
-    dest: "{{ molecule_install_dir }}/{{ molecule_current_dirname }}"
+    src: "{{ molecule_install_dir }}/{{ molecule_venv_name }}-{{ molecule_venv_suffix }}"
+    dest: "{{ molecule_install_dir }}/{{ molecule_venv_name }}"
     state: link
 
 - name: Ensure venv wrapper exists in virtualenv bin directory
   template:
     src: venv.sh.j2
-    dest: "{{ molecule_install_dir }}/molecule-{{ molecule_version }}/bin/venv"
+    dest: "{{ molecule_install_dir }}/{{ molecule_venv_name }}-{{ molecule_venv_suffix }}/bin/venv"
     mode: 0755
   loop:
     - python
@@ -53,24 +68,6 @@
     dest: "{{ molecule_bin_dir }}/{{ item }}"
     mode: 0755
   loop:
-    - anyconfig_cli
-    - chardetect
-    - cookiecutter
-    - flake8
-    - gilt
-    - identify-cli
     - molecule
-    - nodeenv
-    - pre-commit
-    - pre-commit-validate-config
-    - pre-commit-validate-manifest
-    - pycodestyle
-    - pyflakes
-    - py.test
-    - pytest
-    - slugify
-    - tabulate
-    - virtualenv
-    - yamllint
   when: molecule_install_venv_helper is defined
         and molecule_install_venv_helper
